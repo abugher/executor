@@ -59,3 +59,7 @@ A usage file is expected for every library name, which is assumed to
 correspond to exactly one function name.  The usage function itself, for
 example, has an empty usage file to suppress the warning, but does not
 contain conditions to output its own usage.
+
+Integration with other projects seems difficult.  It would be nice for
+other projects to be able to include this as a subproject to make use of
+the framework.
