@@ -1,0 +1,75 @@
+#!/bin/bash
+
+function main() {
+  exe_path="$(readlink -f "${0}")" \
+    || fail "Failed to canonicalize:  ${0}"
+  exe_dir="${exe_path%/*}"
+  cd "${exe_dir}/.." \
+    || fail "Failed to enter directory:  ${bin_dir}/.."
+  wpwd="${PWD}"
+  cd "${OLDPWD}"
+
+  NAME="${0##*/}"
+  BIN="${wpwd}/bin"
+  LIB="${wpwd}/lib"
+  INCLUDED=()
+
+  unset exe_path
+  unset exe_dir
+  unset wpwd
+
+  for dir in "${BIN}" "${LIB}"; do
+    if ! test -d "${dir}"; then
+      fail "No such directory:  ${dir}"
+    fi
+  done
+
+  include "${NAME}"
+
+  if ! test 'function' = "$(type -t "${NAME}")"; then
+    fail "Function not defined:  ${NAME}"
+  fi
+
+  "${NAME}" "${@}"
+}
+
+
+function include() {
+  lib="${1}"
+  if ! test -e "${LIB}/${lib}"; then
+    fail "No such library:  ${lib}"
+  fi
+  for included in "${INCLUDED[@]}"; do
+    if test "${lib}" = "${included}"; then
+      return 0
+    fi
+  done
+  INCLUDED+=( "${lib}" )
+  . "${LIB}/${lib}" \
+    || fail "Failed to include library:  ${lib}"
+}
+
+
+function output() {
+  prefix="${NAME}:  "
+  printf '%s%s\n' "${prefix}" "${1}"
+}
+
+
+function warn() {
+  output "WARNING:  ${1}" 2>&1
+}
+
+
+function error() {
+  output "ERROR:  ${1}" 2>&1
+}
+
+
+function fail() {
+  error "${1}"
+  exit "${2:-1}"
+}
+
+
+main "${@}"
