@@ -12,6 +12,7 @@ function main() {
   NAME="${0##*/}"
   BIN="${wpwd}/bin"
   LIB="${wpwd}/lib"
+  DOC="${wpwd}/doc"
   INCLUDED=()
 
   unset exe_path
@@ -24,6 +25,7 @@ function main() {
     fi
   done
 
+  include usage
   include "${NAME}"
 
   if ! test 'function' = "$(type -t "${NAME}")"; then
@@ -45,6 +47,9 @@ function include() {
     fi
   done
   INCLUDED+=( "${lib}" )
+  if ! test -e "${DOC}/${lib}"; then
+    warn "No documentation found for:  ${lib}"
+  fi
   . "${LIB}/${lib}" \
     || fail "Failed to include library:  ${lib}"
 }

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+
+function usage() {
+  function="${FUNCNAME[1]}"
+  output "Function:  ${function}"
+  output "Usage:"
+  output
+  while read line; do
+    output "  ${line}"
+  done < "${DOC}/${function}"
+}
+

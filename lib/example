@@ -4,5 +4,6 @@ include example
 
 
 function example() {
+  usage
   return 0
 }
