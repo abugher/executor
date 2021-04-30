@@ -1,0 +1,21 @@
+chunk [-a [-s <output separator>]] <separator> <filter>
+
+  chunk will read stdin into chunks.  separator will be used as a filter for
+  grep, and every line matching will be treated as the first line of a chunk.
+  Each subsequent line not matching separator will be appended to that chunk,
+  until separator is encountered again.
+
+  filter will also be used as a filter for grep.  The first chunk whose first
+  line matches filter will be output.  All other chunks will be discarded.
+
+  If -a is specified, all matching chunks will be output.  If -s is also
+  specified, output separator will be output before every chunk.
+
+chunk -n <separator>
+
+  As above, but all chunks will be output, sorted by the first lines
+  numerically.
+
+chunk -a <separator>
+
+  As above, but sorted alphabetically.
