@@ -50,30 +50,30 @@ DESCRIPTION
 
 EXAMPLES
 
-  chunk '^[A-Z]+$' < doc/chunks
+  chunk '^[A-Z]+$' < doc/chunk
 
     Output every section of this document, in original order.  Equivalent to
     cat.
 
-  chunk -f '^DESCRIPTION$' '^[A-Z]+$' < doc/chunks
+  chunk -f '^DESCRIPTION$' '^[A-Z]+$' < doc/chunk
     
     Output only the DESCRIPTION section of this document.
 
-  chunk -n 2 '^[A-Z]+$' < doc/chunks
+  chunk -n 2 '^[A-Z]+$' < doc/chunk
     
     Output the first two sections of this document, NAME and SYNOPSIS.
 
-  chunk -s a -n 1 '^[A-Z]+$' < doc/chunks
+  chunk -s a -n 1 '^[A-Z]+$' < doc/chunk
     
     Output the section of this document with the heading coming first in
     alphabetical order, BUGS.
 
-  chunk -n 2 -r '^[A-Z]+$' < doc/chunks
+  chunk -n 2 -r '^[A-Z]+$' < doc/chunk
     
     Output the first two sections of this document, in reverse order, SYNOPSIS
     then NAME.
 
-  chunk -N 2 -r '^[A-Z]+$' < doc/chunks
+  chunk -N 2 -r '^[A-Z]+$' < doc/chunk
 
     Output the last two sections of this document, in reverse order, BUGS then
     EXAMPLES.
