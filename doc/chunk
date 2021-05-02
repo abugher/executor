@@ -2,10 +2,12 @@ NAME
 
   chunk - Divide input into multi-line chunks.
 
+
 SYNOPSIS
 
   chunk [-f <output filter>] [-s 'a'|'n'] [-n|-N <max chunks>] [-r] 
-    [-S <output separator>] [-0] <input separator> [grep options]
+    [-S <output separator>] [-0] <input separator>
+
 
 DESCRIPTION
 
@@ -45,8 +47,6 @@ DESCRIPTION
   If redundant or conflicting options are specified, the last instance will take
   effect.
 
-  All remaining arguments will be passed to grep, both when matching input
-  separator and when matching output filter, after the default options '-qE'.
 
 EXAMPLES
 
@@ -77,6 +77,7 @@ EXAMPLES
 
     Output the last two sections of this document, in reverse order, BUGS then
     EXAMPLES.
+
 
 BUGS
   

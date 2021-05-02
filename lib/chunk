@@ -11,8 +11,6 @@ function chunk() {
   unset reverse_order
   unset chunk_zero
   chunk_set='all'
-  unset grep_options
-  grep_options=()
 
   # Parse and validate arguments.
   while ! test 0 = "${#}"; do
@@ -82,7 +80,8 @@ function chunk() {
         if ! test 'set' = "${input_separator:+set}"; then
           input_separator="${arg}"
         else
-          grep_options+=( "${arg}" )
+          usage
+          fail "Unreconized extra argument:  ${arg}"
         fi
         ;;
     esac
@@ -98,7 +97,7 @@ function chunk() {
   chunks=()
   i=0
   while IFS= read line; do
-    if grep -qE "${grep_options[@]}" "${input_separator}" <<< "${line}"; then
+    if grep -qE "${input_separator}" <<< "${line}"; then
       i="$(( i + 1 ))"
       chunks["${i}"]="${line}"
     elif test 'set' = "${chunks[0]:+set}"; then
@@ -125,7 +124,7 @@ function chunk() {
       if test 0 -eq "${i}"; then
         continue
       fi
-      if head -n 1 <<< "${chunks["${i}"]}" | grep -qE "${grep_options[@]}" "${output_filter}"; then
+      if head -n 1 <<< "${chunks["${i}"]}" | grep -qE "${output_filter}"; then
         filtered_indices+=( "${i}" )
       fi
     done

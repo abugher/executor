@@ -2,10 +2,23 @@ NAME
 
   example - It's just an example.
 
+
 SYNOPSIS
 
   example [...]
 
+
 DESCRIPTION
 
   Does nothing.  Any arguments are ignored.
+
+
+EXAMPLES
+
+  example
+    
+    Does nothing.
+
+  example foo bar -x 2 -y purple
+    
+    Still does nothing.
