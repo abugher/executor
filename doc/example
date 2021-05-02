@@ -1,3 +1,11 @@
-example [...]
+NAME
+
+  example - It's just an example.
+
+SYNOPSIS
+
+  example [...]
+
+DESCRIPTION
 
   Does nothing.  Any arguments are ignored.

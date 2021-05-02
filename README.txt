@@ -20,22 +20,22 @@ executor at bin/$name.  Write documentation at doc/$name.
   ln -s executor "bin/${name}"
 
   cat > doc/"${name}" <<< EOF
-  ${name} <mandatory arg> [optional arg]
-    
-    Each synopsis should be similar to a man page synopsis and followed
-    by an indented section (like this one) describing what that
-    particular invocation will do and how arguments and flags affect
-    execution.  Two space indentation is conventional.
+  NAME
 
-    In this case, no flags are expected, one mandatory argument is
-    expected, and at most one optional argument may be specified.
+    ${name} - A tool to do a thing.
 
-  ${name} -f <flag parameter> -<x|y|z> [optional arg] [...]
-    
-    This section describes an alternative invocation of ${name}.  In
-    this case, a flag -f is expected and must be followed by a non-flag
-    argument.  One flag out of -x, -y, or -z is also required.  Any
-    number of arguments are accepted.
+  SYNOPSIS
+
+    ${name} <mandatory arg> [optional arg]
+    ${name} -f <flag parameter> -<x|y|z> [optional arg] [...]
+
+  DESCRIPTION
+
+    This is where you describe what ${name} is and does, and how
+    arguments affect execution.  I like to emulate the format of a man
+    page, but these files are plain text.  Line-wrapping is encouraged;
+    80 character line-width is recommended.
+  EOF
 
 
 Bugs:
