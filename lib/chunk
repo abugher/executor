@@ -154,7 +154,8 @@ function chunk() {
     
     for i in "${filtered_indices[@]}"; do
       # Allow for chunks with duplicate headers.
-      if test '' = "$( head -n 1 <<< "${chunks["${i}"]}" )"; then
+      header="$( head -n 1 <<< "${chunks["${i}"]}" )"
+      if test '' = "${header}"; then
         indices_with_empty_header="${indices_with_empty_header}"$'\n'"${i}"
       else
         indices_by_header["${header}"]="${indices_by_header["${header}"]}"$'\n'"${i}"
@@ -171,7 +172,10 @@ function chunk() {
     # Sort headers, record sorted indices.
     sorted_indices+=( 
       $(
-        $sort <<< "${!indices_by_header[@]}" \
+        for header in "${!indices_by_header[@]}"; do
+          printf '%s\n' "${header}"
+        done \
+          | $sort \
           | while read header; do
             printf "%s\n" "${indices_by_header["${header}"]}"
           done
