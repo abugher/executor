@@ -94,7 +94,7 @@ function chunk() {
   unset chunks
   chunks=()
   i=0
-  while read line; do
+  while IFS= read line; do
     if grep -qE "${grep_options[@]}" "${input_separator}" <<< "${line}"; then
       i="$(( i + 1 ))"
       chunks["${i}"]="${line}"
