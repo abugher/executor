@@ -12,15 +12,17 @@ SYNOPSIS
 DESCRIPTION
 
   chunk will read stdin into chunks.  input separator will be used as a filter
-  for grep, and every line matching will be treated as the first line of a
-  chunk.  Each subsequent line not matching input separator will be appended to
-  that chunk, until input separator is encountered again.
+  for grep in regular expression mode, and every line matching will be treated
+  as the first line of a chunk.  Each subsequent line not matching input
+  separator will be appended to that chunk, until input separator is encountered
+  again.
 
   By default, all chunks will be output.
 
-  If -f is specified, output filter will be used as a filter for grep, matched
-  against the first line of each chunk.  Any chunk not matching will be
-  discarded before sorting, limiting to max chunks, or reversing.
+  If -f is specified, output filter will be used as a filter for grep in regular
+  expression mode, matched against the first line of each chunk.  Any chunk not
+  matching will be discarded before sorting, limiting to max chunks, or
+  reversing.
 
   If -s and a sort method are specified, output will be sorted by the first line
   of each chunk, aphabetically or numerically, corresponding to sort method
