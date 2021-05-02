@@ -194,7 +194,7 @@ function chunk() {
 
   if 
     ! test 'all' = "${chunk_set}" \
-    && test "${max_chunks}" -lt "${#sorted_indices[@]}"
+    && test "${#sorted_indices[@]}" -lt "${max_chunks}"
   then
     limited_indices=( "${sorted_indices[@]}" )
   else
