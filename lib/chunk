@@ -14,7 +14,7 @@ function chunk() {
   unset grep_options
   grep_options=()
 
-  # Parse arguments.
+  # Parse and validate arguments.
   while ! test 0 = "${#}"; do
     arg="${1}"
     shift 1
@@ -84,7 +84,6 @@ function chunk() {
     esac
   done
 
-  # Validate.
   if ! test 'set' = "${input_separator:+set}"; then
     usage
     fail "No input separator specified."
@@ -104,23 +103,34 @@ function chunk() {
   done
 
   # Filter.
+  unset filtered_indices
+  unset all_indices
+  unset all_indices_except_zero
   if test 'set' = "${output_filter:+set}"; then
-    unset filtered_indices
     filtered_indices=()
-    # Skip chunk zero.
-    for i in $(
-      seq \
-        1 \
-        $(( "${#chunks[@]}" - 1 ))
-    ); do
+    all_indices=( "${!chunks[@]}" )
+    if test 'set' = "${chunks[0]:+set}"; then
+      # Skip chunk zero.
+      all_indices_except_zero=( "${all_indices[@]:1}" )
+    else
+      all_indices_except_zero=( "${all_indices[@]}" )
+    fi
+    for i in "${all_indices_except_zero[@]}"; do
+      if test 0 -eq "${i}"; then
+        continue
+      fi
       if head -n 1 <<< "${chunks["${i}"]}" | grep -qE "${grep_options[@]}" "${output_filter}"; then
         filtered_indices+=( "${i}" )
       fi
     done
   else
-    # Skip chunk zero.
     all_indices=( "${!chunks[@]}" )
-    filtered_indices=( "${all_indices[@]:1}" )
+    if test 'set' = "${chunks[0]:+set}"; then
+      # Skip chunk zero.
+      filtered_indices=( "${all_indices[@]:1}" )
+    else
+      filtered_indices=( "${all_indices[@]}" )
+    fi
   fi
 
   # Sort.
