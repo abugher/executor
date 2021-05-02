@@ -6,7 +6,7 @@ function usage() {
   output "Function:  ${function}"
   output "Usage:"
   output
-  while read line; do
+  while IFS= read line; do
     output "  ${line}"
   done < "${DOC}/${function}"
 }
