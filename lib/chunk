@@ -9,7 +9,7 @@ function chunk() {
   unset output_filter
   unset output_separator
   unset reverse_order
-  first_chunk=1
+  unset chunk_zero
   chunk_set='all'
   unset grep_options
   grep_options=()
@@ -76,7 +76,7 @@ function chunk() {
         fi
         ;;
       '-0')
-        first_chunk=0
+        chunk_zero='yes'
         ;;
       *)
         if ! test 'set' = "${input_separator:+set}"; then
@@ -101,8 +101,10 @@ function chunk() {
     if grep -qE "${grep_options[@]}" "${input_separator}" <<< "${line}"; then
       i="$(( i + 1 ))"
       chunks["${i}"]="${line}"
-    else
+    elif test 'set' = "${chunks[0]:+set}"; then
       chunks["${i}"]="${chunks["${i}"]}"$'\n'"${line}"
+    else
+      chunks["${i}"]="${line}"
     fi
   done
 
@@ -148,7 +150,10 @@ function chunk() {
     indices_with_empty_header=()
 
     # Reintroduce chunk zero.
-    if test 'set' = "${chunks[0]:+set}"; then
+    if 
+      test 'set' = "${chunks[0]:+set}" \
+        && test 'set' = "${chunk_zero:+set}"
+    then
       indices_with_empty_header+=( 0 )
     fi
     
@@ -183,7 +188,10 @@ function chunk() {
     )
   else
     # Reintroduce chunk zero.
-    if test 'set' = "${chunks[0]:+set}"; then
+    if 
+      test 'set' = "${chunks[0]:+set}" \
+        && test 'set' = "${chunk_zero:+set}"
+    then
       sorted_indices=(
         0
       )
