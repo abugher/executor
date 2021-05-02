@@ -1,0 +1,31 @@
+NAME
+  
+  link_trace - Output a list of absolute paths in a chain of symlinks.
+
+
+SYNOPSIS
+
+  link_trace <link>
+
+
+DESCRIPTION
+  
+  Output an absolute path to link.  If link is a symlink, redefine link as the
+  target of that symlink, and repeat, until link is not a symlink.
+
+  Output is delimited by nulls.  Filenames with newlines, spaces, etc, should be fine.
+
+
+EXAMPLES
+
+  link_trace ~/bin/chunk | while IFS= read -d $'\0' line; do echo "${line}"; done
+
+    As seen here, link_trace provides consistent output, but the calling script
+    must be reader for null delimiters.
+
+
+BUGS
+
+  Output is delimited by nulls.  It is on purpose and probably necessary if
+  link_trace is expected to handle badly named files correctly, but it is
+  annoying to work with.

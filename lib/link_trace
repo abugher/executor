@@ -1,0 +1,32 @@
+#!/bin/bash
+
+
+function link_trace() {
+  opwd="${PWD}"
+  link="${1}"
+  if ! shift 1; then
+    usage
+    fail "Missing argument:  link"
+  fi
+
+  while true; do
+    if grep -q '/' <<< "${link}"; then
+      link_dir="${link%/*}"
+      if ! cd "${link_dir}"; then
+        cd "${opwd}"
+        fail "Failed to enter directory:  ${link_dir}"
+      fi
+    fi
+    link="${link##*/}"
+    printf '%s/%s\0' "${PWD}" "${link}"
+    if ! test -L "${link}"; then
+      break
+    fi
+    if ! link="$(readlink "${link}")"; then
+      cd "${opwd}"
+      fail "Failed to read link:  ${link}"
+    fi
+  done
+
+  cd "${opwd}"
+}
