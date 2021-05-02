@@ -20,7 +20,11 @@ function chunk() {
     shift 1
     case "${arg}" in
       '-f')
-        output_filter="${arg}"
+        output_filter="${1}"
+        if ! shift 1; then
+          usage
+          fail "Missing output filter."
+        fi
         ;;
       '-s')
         sort="${1}"
