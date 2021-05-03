@@ -11,21 +11,31 @@ function main() {
 
   NAME="${0##*/}"
   BIN="${wpwd}/bin"
-  LIB="${wpwd}/lib"
-  DOC="${wpwd}/doc"
+  shared_lib="${wpwd}/lib"
+  shared_doc="${wpwd}/doc"
   INCLUDED=()
 
   unset exe_path
   unset exe_dir
   unset wpwd
 
-  for dir in "${BIN}" "${LIB}"; do
+  for dir in "${BIN}" "${shared_lib}"; do
     if ! test -d "${dir}"; then
       fail "No such directory:  ${dir}"
     fi
   done
 
   include usage
+  include link_trace
+
+  link_trace "${0}" | while IFS= read -d $'\0' exe; do
+    if test 'executor' = "${exe##*/}"; then
+      local_lib="${exe%/*}/../lib"
+      local_doc="${exe%/*}/../doc"
+      break
+    fi
+  done
+
   include "${NAME}"
 
   if ! test 'function' = "$(type -t "${NAME}")"; then
@@ -38,7 +48,7 @@ function main() {
 
 function include() {
   lib="${1}"
-  if ! test -e "${LIB}/${lib}"; then
+  if ! test -e "${shared_lib}/${lib}"; then
     fail "No such library:  ${lib}"
   fi
   for included in "${INCLUDED[@]}"; do
@@ -47,10 +57,17 @@ function include() {
     fi
   done
   INCLUDED+=( "${lib}" )
-  if ! test -e "${DOC}/${lib}"; then
+  if test -e "${local_lib}/${lib}"; then
+    lib_path="${local_lib}"
+    doc_path="${local_doc}"
+  else
+    lib_path="${shared_lib}"
+    doc_path="${shared_doc}"
+  fi
+  if ! test -e "${doc_path}/${lib}"; then
     warn "No documentation found for:  ${lib}"
   fi
-  . "${LIB}/${lib}" \
+  . "${lib_path}/${lib}" \
     || fail "Failed to include library:  ${lib}"
 }
 

@@ -1,0 +1,39 @@
+NAME
+  
+  include - Include (source) a library file (shell script) if it has not yet
+  been included.
+
+
+SYNOPSIS
+
+  include <lib>
+
+
+DESCRIPTION
+
+  If lib has already been included, or is in the process of being included now,
+  do nothing.
+
+  Look for lib in two places, the local library path and the shared library
+  path. 
+  
+  The local library path is determined by by using link_trace on the script
+  being executed, and finding the first file in the trace ending with the file
+  name 'executor'.  It is assumed that executor is in a 'bin' directory, and
+  that there is a parallel 'lib' directory.  That 'lib' directory becomes the
+  local library path.
+
+  The shared library path is determined in a similar way, by finding the
+  ultimate canonical (non-symlink) target of the file name being executed (if
+  it is a symlink), assuming that the final file name resides in a 'bin'
+  directory, and defining a parallel 'lib' directory as the shared library
+  path.
+
+  If a file named lib exists in the local library path, it is sourced.
+  Otherwise, it is assumed to exist in the shared library path.  If it is not
+  found or sourcing fails, a fatal error is generated.
+
+  A local documentation path and a shared documentation path are determined in
+  the same way as the library paths, but with the assumed directory name of
+  'doc'.  If a usage file named lib is not found in the documentation path
+  parallel to the library path, a warning is generated.
