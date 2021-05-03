@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 function main() {
   exe_path="$(readlink -f "${0}")" \
     || fail "Failed to canonicalize:  ${0}"
@@ -9,17 +10,17 @@ function main() {
   wpwd="${PWD}"
   cd "${OLDPWD}"
 
-  NAME="${0##*/}"
-  BIN="${wpwd}/bin"
+  name="${0##*/}"
+  bin="${wpwd}/bin"
   shared_lib="${wpwd}/lib"
   shared_doc="${wpwd}/doc"
-  INCLUDED=()
+  included=()
 
   unset exe_path
   unset exe_dir
   unset wpwd
 
-  for dir in "${BIN}" "${shared_lib}"; do
+  for dir in "${bin}" "${shared_lib}"; do
     if ! test -d "${dir}"; then
       fail "No such directory:  ${dir}"
     fi
@@ -28,41 +29,40 @@ function main() {
   include usage
   include link_trace
 
-  link_trace "${0}" | while IFS= read -d $'\0' exe; do
+  while IFS= read -d $'\0' exe; do
     if test 'executor' = "${exe##*/}"; then
       local_lib="${exe%/*}/../lib"
       local_doc="${exe%/*}/../doc"
       break
     fi
-  done
+  done < <(link_trace "${0}")
 
-  include "${NAME}"
+  include "${name}"
 
-  if ! test 'function' = "$(type -t "${NAME}")"; then
-    fail "Function not defined:  ${NAME}"
+  if ! test 'function' = "$(type -t "${name}")"; then
+    fail "Function not defined:  ${name}"
   fi
 
-  "${NAME}" "${@}"
+  "${name}" "${@}"
 }
 
 
 function include() {
   lib="${1}"
-  if ! test -e "${shared_lib}/${lib}"; then
-    fail "No such library:  ${lib}"
-  fi
-  for included in "${INCLUDED[@]}"; do
+  for included in "${included[@]}"; do
     if test "${lib}" = "${included}"; then
       return 0
     fi
   done
-  INCLUDED+=( "${lib}" )
+  included+=( "${lib}" )
   if test -e "${local_lib}/${lib}"; then
     lib_path="${local_lib}"
     doc_path="${local_doc}"
-  else
+  elif test -e "${shared_lib}/${lib}"; then
     lib_path="${shared_lib}"
     doc_path="${shared_doc}"
+  else
+    fail "No such library:  ${lib}"
   fi
   if ! test -e "${doc_path}/${lib}"; then
     warn "No documentation found for:  ${lib}"
@@ -73,7 +73,7 @@ function include() {
 
 
 function output() {
-  prefix="${NAME}:  "
+  prefix="${name}:  "
   printf '%s%s\n' "${prefix}" "${1}"
 }
 
