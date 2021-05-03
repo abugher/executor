@@ -8,6 +8,6 @@ function usage() {
   output
   while IFS= read line; do
     output "  ${line}"
-  done < "${DOC}/${function}"
+  done < "${doc_path}/${function}"
 }
 
