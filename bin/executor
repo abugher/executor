@@ -6,7 +6,7 @@ function main() {
     || fail "Failed to canonicalize:  ${0}"
   exe_dir="${exe_path%/*}"
   cd "${exe_dir}/.." \
-    || fail "Failed to enter directory:  ${bin_dir}/.."
+    || fail "Failed to enter directory:  ${exe_dir}/.."
   wpwd="${PWD}"
   cd "${OLDPWD}"
 
