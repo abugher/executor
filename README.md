@@ -77,38 +77,40 @@ Write a function named $name, in a library file at lib/$name.  Declare
 dependencies on other libraries under lib/.  Create a symlink to
 executor at bin/$name.  Write documentation at doc/$name.
 
-  cat > lib/"${name}" <<< EOF
-  #!/bin/bash
+```
+cat > lib/"${name}" <<< EOF
+#!/bin/bash
 
-  include dependency1
-  include dependency2
+include dependency1
+include dependency2
 
 
-  function ${name}() {
-    # do stuff
-    return 0
-  }
-  EOF
+function ${name}() {
+  # do stuff
+  return 0
+}
+EOF
 
-  ln -s executor "bin/${name}"
+ln -s executor "bin/${name}"
 
-  cat > doc/"${name}" <<< EOF
-  NAME
+cat > doc/"${name}" <<< EOF
+NAME
 
-    ${name} - A tool to do a thing.
+  ${name} - A tool to do a thing.
 
-  SYNOPSIS
+SYNOPSIS
 
-    ${name} <mandatory arg> [optional arg]
-    ${name} -f <flag parameter> -<x|y|z> [optional arg] [...]
+  ${name} <mandatory arg> [optional arg]
+  ${name} -f <flag parameter> -<x|y|z> [optional arg] [...]
 
-  DESCRIPTION
+DESCRIPTION
 
-    This is where you describe what ${name} is and does, and how
-    arguments affect execution.  I like to emulate the format of a man
-    page, but these files are plain text.  Line-wrapping is encouraged;
-    80 character line-width is recommended.
-  EOF
+  This is where you describe what ${name} is and does, and how
+  arguments affect execution.  I like to emulate the format of a man
+  page, but these files are plain text.  Line-wrapping is encouraged;
+  80 character line-width is recommended.
+EOF
+```
 
 
 
