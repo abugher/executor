@@ -73,9 +73,9 @@ function definition.  I think they look good at the top of the file.
 
 To write a new script named $name:
 
-Write a function named $name, in a library file at lib/$name.  Declare
-dependencies on other libraries under lib/.  Create a symlink to
-executor at bin/$name.  Write documentation at doc/$name.
+Write a function named `$name`, in a library file at `lib/$name`.  Declare
+dependencies on other libraries to be found under `lib/`.  Write documentation
+at `doc/$name`.  Create a symlink to `executor` at `bin/$name`.
 
 ```
 cat > lib/"${name}" <<< EOF
@@ -91,27 +91,28 @@ function ${name}() {
 }
 EOF
 
-ln -s executor "bin/${name}"
-
 cat > doc/"${name}" <<< EOF
 NAME
 
   ${name} - A tool to do a thing.
+
 
 SYNOPSIS
 
   ${name} <mandatory arg> [optional arg]
   ${name} -f <flag parameter> -<x|y|z> [optional arg] [...]
 
+
 DESCRIPTION
 
-  This is where you describe what ${name} is and does, and how
-  arguments affect execution.  I like to emulate the format of a man
-  page, but these files are plain text.  Line-wrapping is encouraged;
-  80 character line-width is recommended.
+  This is where you describe what ${name} is and does, and how arguments affect
+  execution.  I like to emulate the format of a man page, but these files are
+  plain text.  Line-wrapping is encouraged.  80 character line-width is
+  recommended.
 EOF
-```
 
+ln -s executor "bin/${name}"
+```
 
 
 # Bugs
