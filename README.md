@@ -20,9 +20,9 @@ written in library files.
 # Assumptions
 
 * Your project consists of the following directories:
- * `bin`
- * `lib`
- * `doc`
+    * `bin`
+    * `lib`
+    * `doc`
 * Each function (`foo`) is defined under `lib/` in a file with the same name as the function (`lib/foo`).
 * Each function (`foo`) is documented under `doc/` in a file with the same name as the function (`doc/foo`).
 * The name of each executable you wish to expose to the user is the name of a function.
